@@ -148,7 +148,7 @@ class Experiment(experiment.AbstractExperiment):
       logging.info(
           'Initializing parameters rather than restoring from checkpoint.')
       batch = next(self._build_train_input())
-
+      print('Initialize Training Function')
       rng = jl_utils.get_first(rng)
       params_rng, dropout_rng = jax.random.split(rng)
       params_rng = jl_utils.bcast_local_devices(params_rng)
@@ -196,6 +196,7 @@ class Experiment(experiment.AbstractExperiment):
     return iter(tfds.as_numpy(ds))
 
   def _loss_fn(self, params, batch, global_step, rng):
+    print('Going into loss function')
     text_char = batch['text_char']
     text_word = batch['text_word']
     text_unmasked = batch['text_unmasked']
@@ -336,11 +337,11 @@ class Experiment(experiment.AbstractExperiment):
     """Applies an update to parameters and returns new state."""
     # This function computes the gradient of the first output of loss_fn and
     # passes through the other arguments unchanged.
+    print('Invoked Update Function')
     grad_loss_fn = jax.grad(self._loss_fn, has_aux=True)
     scaled_grads, (loss, date_loss, subregion_loss, subregion_accuracy,
                    mask_loss, mask_accuracy, nsp_loss,
                    nsp_accuracy) = grad_loss_fn(params, batch, global_step, rng)
-
     scaled_grads = jax.tree_map(jnp.nan_to_num, scaled_grads)
     grads = jl_utils.tree_psum(scaled_grads, axis_name='i')
 
