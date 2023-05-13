@@ -160,7 +160,7 @@ def get_config():
           ),))
 
   # Training loop config.
-  config.training_steps = 1_000_000
+  config.training_steps = 1_000
   config.log_train_data_interval = 10
   config.save_checkpoint_interval = 300
   config.best_model_eval_metric = 'score/eval'
