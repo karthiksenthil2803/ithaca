@@ -197,6 +197,9 @@ class Experiment(experiment.AbstractExperiment):
 
   def _loss_fn(self, params, batch, global_step, rng):
     print('Going into loss function')
+
+    print(params, batch, global_step, rng)
+
     text_char = batch['text_char']
     text_word = batch['text_word']
     text_unmasked = batch['text_unmasked']
@@ -330,6 +333,7 @@ class Experiment(experiment.AbstractExperiment):
     loss = date_loss + subregion_loss + mask_loss + nsp_loss
     scaled_loss = loss / jax.device_count()
     # NOTE: We use scaled_loss for grads and unscaled for logging.
+    print("We are before returning the statement for loss")
     return scaled_loss, (loss, date_loss, subregion_loss, subregion_accuracy,
                          mask_loss, mask_accuracy, nsp_loss, nsp_accuracy)
 
