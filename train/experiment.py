@@ -197,9 +197,6 @@ class Experiment(experiment.AbstractExperiment):
 
   def _loss_fn(self, params, batch, global_step, rng):
     print('Going into loss function')
-
-    print(params, batch, global_step, rng)
-
     text_char = batch['text_char']
     text_word = batch['text_word']
     text_unmasked = batch['text_unmasked']
